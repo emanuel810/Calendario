@@ -20,13 +20,13 @@ export const useCalendarStore = () => {
         try {
             if( calendarEvent.id ) {
                 // Actualizando
-                await calendarApi.put(`/events/${ calendarEvent.id }`, calendarEvent );
+                await calendarApi.put(`${process.env.REACT_APP_API_URL}/events/${ calendarEvent.id }`, calendarEvent );
                 dispatch( onUpdateEvent({ ...calendarEvent, user }) );
                 return;
             } 
     
             // Creando
-            const { data } = await calendarApi.post('/events', calendarEvent );
+            const { data } = await calendarApi.post('${process.env.REACT_APP_API_URL}/events', calendarEvent );
             console.log(data)
             dispatch( onAddNewEvent({ ...calendarEvent, id: data.eventoGuardado.id, user }) );
 
@@ -40,7 +40,7 @@ export const useCalendarStore = () => {
        
         try {
             console.log('startdeletingevent')
-            await calendarApi.delete(`/events/${ activeEvent.id }` );
+            await calendarApi.delete(`${process.env.REACT_APP_API_URL}/events/${ activeEvent.id }` );
             dispatch( onDeleteEvent() );
         } catch (error) {
             console.log(error);
@@ -53,7 +53,7 @@ export const useCalendarStore = () => {
     const startLoadingEvents = async() => {
         try {
             
-            const { data } = await calendarApi.get('/events');
+            const { data } = await calendarApi.get(`${process.env.REACT_APP_API_URL}/events`);
             const events = convertEvents( data.eventos );
             dispatch( onLoadEvents( events ) );
 
